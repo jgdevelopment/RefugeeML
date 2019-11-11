@@ -294,6 +294,8 @@ class XGBoost(object):
         self.min_samples_split = min_samples_split  # The minimum n of sampels to justify split
         self.min_impurity = min_impurity              # Minimum variance reduction to continue
         self.max_depth = max_depth                  # Maximum depth for tree
+        self.logits = None
+
 
         self.bar = progressbar.ProgressBar(widgets=bar_widgets)
         
@@ -335,6 +337,7 @@ class XGBoost(object):
 
         # Turn into probability distribution (Softmax)
         y_pred = np.exp(y_pred) / np.sum(np.exp(y_pred), axis=1, keepdims=True)
+        self.logits = y_pred
         # Set label to the value that maximizes probability
         y_pred = np.argmax(y_pred, axis=1)
         return y_pred
